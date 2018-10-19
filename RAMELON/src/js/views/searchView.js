@@ -13,6 +13,10 @@ export const clearResults = () =>{
     elements.searchResPages.innerHTML = '';
 };
  //function to limit the recipe title to 17 characters
+
+
+
+
 const limitRecipeTitle = (title,limit =28) =>{
     const newTitle = [];
     const text = '';

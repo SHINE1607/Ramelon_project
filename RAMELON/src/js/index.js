@@ -1,7 +1,10 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import List from './models/List';
+import Likes from './models/Likes'
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import {elements,renderLoader, clearLoader} from './views/base';
 
 // // Global state of the app
@@ -14,6 +17,7 @@ import {elements,renderLoader, clearLoader} from './views/base';
 // throughout our controller
 //state object will have the all controllers asits properties
 export const state = {};
+window.state = state;
 //SEARCH CONTROLLER
 
 const controlSearch = async () => {
@@ -31,6 +35,8 @@ const controlSearch = async () => {
         searchView.clearResults();     
         //render the loader animation 
         renderLoader(elements.searchRes);
+        //hightlight the current recipe
+        
         //search for recipe
         await state.search.getResults();
         // state.recipe.parseIngredients();
@@ -109,6 +115,8 @@ const controlRecipe = async () =>{
         recipeView.clearRecipe();
         recipeView.renderDish(state.recipe);
         //render the recipe
+
+        //update servings
         
 
     }
@@ -124,8 +132,88 @@ const controlRecipe = async () =>{
 //syntax to call same eventListener for mutiple events
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
+//LIST CONTROLLER
+
+const controlList = () =>{
+    //create a new list if there is none yet
+
+    if(!state.list) state.list = new List();
 
 
+    //add each ingredient to the list
+    state.recipe.ingredients.forEach(el =>{
+        //el ppoint towards each ingredient
+        const item = state.list.addItem(el.count,el.unit, el.ingredient);
+        listView.renderitem(item);
+    });
+}
+
+
+//handle delete and update list item events 
+elements.shopping.addEventListener('click', e=>{
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+    //delete bittom
+
+    if(e.target.matches('.shopping__delete, .shopping__delete *')){
+        //delete from state
+        state.list.deleteItem(id)
+
+        //delete form UI
+        listView.deleteItem(id);
+    }else if(e.target.matches('.shopping__count-value')){
+        const val =pardseFloat(e.target.value, 10);
+        state.list.updateCount(id, val);
+    }
+});
+state.likes = new Likes();
+  
+//LIKE CONTROLLER 
+const controlLikes = (recipe) =>{
+    //adding Likes property to state function using constructor call
+    
+    
+    
+    state.likes.addLike(recipe);
+//     elements.recipe.addEventListener('click', e =>{
+//     if(e.target.matches('.recipe__love')){
+//         state.likes.addLike(recipe);
+//     }
+
+// })
+}
+
+
+
+//handling recipe button clicks
+//event.target proprty retuns the traget element on which the event has occured
+elements.recipe.addEventListener('click', e =>{
+    //'btn-decrease*' will include all the child elements
+    //event.matches return true if the selected element matches in any of the child elements in the parent element
+    if(e.target.matches('.btn-decrease, .btn-decrease *')){
+       
+        if(state.recipe.servings>1){
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+        
+    }else if(e.target.matches('.btn-increase , .btn-increase *')){
+        if(state.recipe.servings>1){
+            state.recipe.updateServings('inc');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+    }else if(e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
+        controlList();
+    }else if(e.target.matches('.recipe__love')){
+        controlLikes(state.recipe);
+    }
+
+    
+
+    
+});
+
+
+window.l = new List();
 
 
 

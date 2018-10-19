@@ -33,6 +33,7 @@ export default class Recipe{
         
         const unitsLong = ['tablespoons','tablespoons','ounce', 'ounces','teaspoon','teaspoons','cups', 'pounds','slices', 'batch'];
         const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound', 'slice', 'batch'];
+        const units = [...unitsShort, 'kg', 'g'];
         //here newIngredients array store the elements in the new way as objects 
         const newIngredients = this.ingredients.map(el =>{
             //uniform units
@@ -42,7 +43,7 @@ export default class Recipe{
                  //function to convert old units to new units
             let ingredient = el.toLowerCase();
             unitsLong.forEach((unit,i) =>{
-                ingredient  = ingredient.replace(unit, unitsShort[i]);
+                ingredient  = ingredient.replace(unit, units[i]);
             });
             
             //parse ingredients into count , unit and ingredients
@@ -97,6 +98,23 @@ export default class Recipe{
             return objIng;
         });
         this.ingredients = newIngredients;
-        console.log(this);
+        
+    }
+
+    updateServings(type)  {
+        //type button is based on which butoon is clicked
+        //servings
+        
+        const newServings = type === 'dec' ? this.servings-1: this.servings +1;
+        
+        //ingredients
+        //ingredients are updated
+        this.ingredients.forEach(ing =>{
+            ing.count = ing.count*(newServings/this.servings);
+            
+        });
+
+
+        this.servings = newServings;
     }
 }

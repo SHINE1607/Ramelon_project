@@ -89,7 +89,7 @@ export const renderDish = (recipeObj) =>{
     </div>
 
     <button class="recipe__love">
-        <i class="material-icons" style = "color:white">favorite_border</i>
+        <i class="material-icons love" style = "color:white">favorite_border</i>
     </button>
 </div>
 <div class="recipe__ingredients">

@@ -5,6 +5,7 @@ import Likes from './models/Likes'
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as LikeView from './views/LikeView';
 import {elements,renderLoader, clearLoader} from './views/base';
 
 // // Global state of the app
@@ -165,22 +166,48 @@ elements.shopping.addEventListener('click', e=>{
         state.list.updateCount(id, val);
     }
 });
-state.likes = new Likes();
+state.Likes = new Likes();
   
 //LIKE CONTROLLER 
 const controlLikes = (recipe) =>{
     //adding Likes property to state function using constructor call
-    
-    
-    
-    state.likes.addLike(recipe);
+    if (state.Likes.likes.findIndex(repeat)==-1){
+        state.Likes.numLikes = 0;
+        LikeView.toggleLikeMenu(state.Likes.numLikes);
+        state.Likes.addLike(recipe);
+
+        //calling the UI function to add to the UI
+        
+        LikeView.updateLikeList();
+        
+        
+        
+        
+   }//else condition if the recipe is already there in the like list and removeit from the list
+   else if(state.Likes.likes.findIndex(repeat)>-1){
+        state.Likes.numLikes = 1;
+        LikeView.toggleLikeMenu(state.Likes.numLikes);
+       //calling the function to delete the recipe from the list if it disliked
+        state.Likes.delete(recipe.uri);
+
+        LikeView.updateLikeList();
+        
+        // state.Likes.likes.forEach(el =>{
+        //     LikeView.updateLikeList(recipe);
+        // });
+
+   }
+   function repeat(el){
+       return el.uri === recipe.uri
+   }
+    //NOTE  : The likeview functions are called within the like.js file
 //     elements.recipe.addEventListener('click', e =>{
 //     if(e.target.matches('.recipe__love')){
 //         state.likes.addLike(recipe);
 //     }
 
 // })
-}
+  
 
 
 
@@ -203,7 +230,7 @@ elements.recipe.addEventListener('click', e =>{
         }
     }else if(e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
         controlList();
-    }else if(e.target.matches('.recipe__love')){
+    }else if(e.target.matches('.recipe__love *')){
         controlLikes(state.recipe);
     }
 

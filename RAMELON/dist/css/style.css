@@ -404,7 +404,8 @@ body {
     transition: all .2s;
     display: flex;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    padding:10px; }
     .recipe__love:hover {
       transform: scale(1.07); }
     .recipe__love:focus {
@@ -413,6 +414,13 @@ body {
       height: 2.75rem;
       width: 2.75rem;
       fill: #fff; }
+    .love{
+      align-content: center;
+      justify-content: center;
+    }
+    .recipe__love:focus + .love{
+      color:#ff6666;
+    }
   .recipe__ingredients {
     padding: 4rem 5rem;
     font-size: 1.5rem;

@@ -1,5 +1,6 @@
 import {elements} from '../views/base';
 import {state} from  '../index';
+import * as LikeView from '../views/likeView';
 export default class Likes{
     constructor(){
         //like array to stror the liked recipes
@@ -8,23 +9,20 @@ export default class Likes{
     //fucntion to add the liked recipe to liked list 
     addLike(like){
         //like object to store the info about the current recipe been liked 
-        console.log(like);
-        //current liked recipe object pushed to the array
-       if (this.likes.findIndex(repeat)==-1){
-            this.likes.push(like);
-       }
-       function repeat(el){
-           return el.uri === like.uri
-       }
         
+        //current liked recipe object pushed to the array
+        this.likes.push(like);
+        this.persistData();
         return like 
     }
     //function to delete the recipe from the list 
-    delete(id){
+    delete(uri){
         const index = this.likes.findIndex(el =>{
-            el.id === id
+            el.uri === uri
         });
-        return this.items.splice(index ,1);
+        
+        return this.likes.splice(index ,1);
+        this.persistData();
     }
     //
     isLiked(id){
@@ -35,4 +33,14 @@ export default class Likes{
         return this.likes.length;
 
     }
-}
+    persistData() {
+        const storage  = localStorage.setItem('likes', JSON.stringify(this.likes));
+        //restoring the old files to current likes list after reloading
+        if(storage){
+            this.likes = storage;
+        }
+    }
+    readData() {
+        
+    }
+} 

@@ -55,7 +55,7 @@ const controlSearch = async () => {
                 Recipe not found!
             </div>`;
 
-
+            elements.recipe.innerHTML = '';
             elements.recipe.insertAdjacentHTML('afterbegin', markup);
 
             console.log(`${state.search.cond}: if the fetching the recipe is failed`);
@@ -171,11 +171,16 @@ state.Likes = new Likes();
 //LIKE CONTROLLER 
 const controlLikes = (recipe) =>{
     //adding Likes property to state function using constructor call
+    //if the recipe is not in the list
+    
+        recipe.likeIndex = 1;
+    
+    console.log(recipe);
     if (state.Likes.likes.findIndex(repeat)==-1){
-        state.Likes.numLikes = 0;
-        LikeView.toggleLikeMenu(state.Likes.numLikes);
+        
+        LikeView.toggleLikeMenu(recipe.likeIndex);
         state.Likes.addLike(recipe);
-
+        
         //calling the UI function to add to the UI
         
         LikeView.updateLikeList();
@@ -185,8 +190,8 @@ const controlLikes = (recipe) =>{
         
    }//else condition if the recipe is already there in the like list and removeit from the list
    else if(state.Likes.likes.findIndex(repeat)>-1){
-        state.Likes.numLikes = 1;
-        LikeView.toggleLikeMenu(state.Likes.numLikes);
+        recipe.likeIndex = 0;
+        LikeView.toggleLikeMenu(recipe.likeIndex);
        //calling the function to delete the recipe from the list if it disliked
         state.Likes.delete(recipe.uri);
 
@@ -200,6 +205,7 @@ const controlLikes = (recipe) =>{
    function repeat(el){
        return el.uri === recipe.uri
    }
+}
     //NOTE  : The likeview functions are called within the like.js file
 //     elements.recipe.addEventListener('click', e =>{
 //     if(e.target.matches('.recipe__love')){
@@ -208,6 +214,7 @@ const controlLikes = (recipe) =>{
 
 // })
   
+//handling likes button
 
 
 
@@ -234,9 +241,6 @@ elements.recipe.addEventListener('click', e =>{
         controlLikes(state.recipe);
     }
 
-    
-
-    
 });
 
 

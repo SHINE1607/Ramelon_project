@@ -8,7 +8,7 @@ export const updateLikeList = recipe =>{
         
         let markup = `
     <li>
-        <a class="likes__link" href="${el.uri}}">
+        
             <figure class="likes__fig">
                 <img src="${el.img}" alt="Test">
             </figure>
@@ -16,7 +16,7 @@ export const updateLikeList = recipe =>{
                 <h4 class="likes__name">${el.title}</h4>
                 <p class="likes__author">Ummachi</p>
             </div>
-        </a>
+        
     </li>
 `;
         elements.likesPanel.insertAdjacentHTML('beforeend', markup);
@@ -27,8 +27,8 @@ export const updateLikeList = recipe =>{
     
 }
 
-export const toggleLikeMenu = numLikes => {
-    if(numLikes ==0){
+export const toggleLikeMenu = likeIndex => {
+    if(likeIndex == 0){
         document.querySelector('.recipe__love').innerHTML = `<i class="material-icons" style = "color:white">favorite</i>`
     } 
     else{

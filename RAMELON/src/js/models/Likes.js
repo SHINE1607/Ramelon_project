@@ -9,7 +9,7 @@ export default class Likes{
     //fucntion to add the liked recipe to liked list 
     addLike(like){
         //like object to store the info about the current recipe been liked 
-        
+        console.log('ithenthu myre');
         //current liked recipe object pushed to the array
         this.likes.push(like);
         this.persistData();
@@ -40,7 +40,7 @@ export default class Likes{
             this.likes = storage;
         }
     }
-    readData() {
+    addLikeIndex() {
         
     }
 } 

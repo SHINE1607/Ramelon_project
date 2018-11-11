@@ -12,14 +12,14 @@ export const elements = {
 };
 
 export const elementStrings = {
-    loader: 'loader'
+    loader: 'lds-ellipsis'
 };
 
 
 export const renderLoader = parent =>{
    
     const loader = `
-    <div class = "${elementStrings.loader}"></div>`;
+    <div class="${elementStrings.loader}"><div></div><div></div><div></div><div></div></div>`;
     parent.insertAdjacentHTML('afterbegin', loader);
 };
 

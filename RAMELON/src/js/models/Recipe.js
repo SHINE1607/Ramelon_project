@@ -21,6 +21,7 @@ export default class Recipe{
                     this.ingredients = el.recipe.ingredientLines;
                     this.time = el.recipe.totalTime;
                     this.servings = 4; 
+                    this.likeIndex = 0;
                 }
                
             });
